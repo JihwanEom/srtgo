@@ -8,7 +8,7 @@ from typing import Awaitable, Callable, List, Optional, Tuple, Union
 import asyncio
 import click
 import inquirer
-import keyring
+from . import config_storage as keyring  # keyring 모듈을 config_storage로 대체
 import telegram
 import time
 import re

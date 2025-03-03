@@ -3,12 +3,12 @@ from json.decoder import JSONDecodeError
 from random import gammavariate
 from requests.exceptions import ConnectionError
 from termcolor import colored
-from typing import Awaitable, Callable, List, Optional, Tuple, Union
+from typing import Awaitable, Callable, Optional, Union
 
 import asyncio
 import click
 import inquirer
-from . import config_storage as keyring  # keyring 모듈을 config_storage로 대체
+from . import secure_storage as keyring
 import telegram
 import time
 import re

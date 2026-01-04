@@ -702,7 +702,9 @@ def reserve(rail_type="SRT", debug=False):
             _sleep()
 
         except KorailError as ex:
-            if not any(msg in str(ex) for msg in ("Sold out", "잔여석없음", "예약대기자한도수초과")):
+            benign_msgs = ("Sold out", "잔여석없음", "예약대기자한도수초과", "예약대기불가 열차종별")
+            # 예약대기 불가 열차 등은 단순히 다시 시도
+            if not any(msg in str(ex) for msg in benign_msgs):
                 if not _handle_error(ex):
                     return
             _sleep()
@@ -714,8 +716,10 @@ def reserve(rail_type="SRT", debug=False):
             rail = login(rail_type, debug=debug)
 
         except ConnectionError as ex:
-            if not _handle_error(ex, "연결이 끊겼습니다"):
-                return
+            # 연결 끊김은 메시지만 남기고 무한 재시도
+            if debug:
+                print("연결이 끊겼습니다. 다시 시도합니다.")
+            _sleep()
             rail = login(rail_type, debug=debug)
 
         except Exception as ex:
